@@ -26,17 +26,15 @@ function getRealAwsConfig(awsLocation) {
             `https://${gcpEndpoint}` : `https://${awsEndpoint}`,
         signatureVersion: 'v4',
     };
+    params.httpOptions = {
+        agent: new https.Agent({ keepAlive: true }),
+    };
     if (credentialsProfile) {
         const credentials = getAwsCredentials(credentialsProfile,
             '/.aws/credentials');
         params.credentials = credentials;
         return params;
     }
-    params.httpOptions = {
-        agent: new https.Agent({
-            keepAlive: true,
-        }),
-    };
     params.accessKeyId = locCredentials.accessKey;
     params.secretAccessKey = locCredentials.secretKey;
     return params;
