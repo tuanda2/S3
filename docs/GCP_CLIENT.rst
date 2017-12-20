@@ -103,6 +103,10 @@ Google Cloud Storage APIs
         - Get Versioning
     - HEAD Bucket
     - DELETE Bucket
+    - PUT Object
+    - GET Object
+    - HAD Object
+    - DELETE Object
 
 Custom GCP APIs
 ~~~~~~~~~~~~~~~
