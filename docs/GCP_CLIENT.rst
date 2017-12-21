@@ -94,28 +94,54 @@ API Template:
 
 
 Google Cloud Storage APIs
-~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------
 .. code::
 
     - PUT Bucket
         - Set Versioning
+        - Set Bucket ACL
     - GET Bucket
         - Get Versioning
+        - Get Bucket ACL
     - HEAD Bucket
     - DELETE Bucket
     - PUT Object
+        - Set Object ACL
     - GET Object
+        - Get Object ACL
     - HAD Object
     - DELETE Object
 
 Custom GCP APIs
-~~~~~~~~~~~~~~~
+---------------
+
+Google Cloud Storage ACL
+^^^^^^^^^^^^^^^^^^^^^^^^
+Google Cloud Storage XML API supports setting and getting bucket/object ACL with
+canned ACL or a ACL configuration in the request body, but it does not have
+support for setting ACL with grant headers like S3. GCP also does not have support
+for all certain AWS permission types.
+
+ACL Mapping
+~~~~~~~~~~~
+============    ============    ========================    ============
+AWS             GCP             AWS Canned                  GCP Canned
+============    ============    ========================    ============
+READ            READ            private                     private
+WRITE           WRITE           bucket-owner-read           bucket-owner-read
+READ_ACP        FULL_CONTROL    bucket-owner-fullcontrol    bucket-owner-fullcontrol
+WRITE_ACP       FULL_CONTROL    public-read                 public-read
+FULL_CONTROL    FULL_CONTROL    public-read-write           public-read-write
+_               _               authenticated-read          authenticated-read
+_               _               aws-exec-read               _
+_               _               log-deliver-write           _
+_               _               _                           project-private
+============    ============    ========================    ============
 
 .. code::
 
     To be implemented:
     Delete Objects
-    AWS ACL-Grant Headers
     Multipart Upload
     Object Tagging
     Versioning
