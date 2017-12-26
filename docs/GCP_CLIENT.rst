@@ -98,7 +98,9 @@ Google Cloud Storage APIs
 .. code::
 
     - PUT Bucket
+        - Set Versioning
     - GET Bucket
+        - Get Versioning
     - HEAD Bucket
     - DELETE Bucket
 
