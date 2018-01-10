@@ -28,7 +28,25 @@ function gcpClientRetry(fn, params, callback, retry = 0) {
     });
 }
 
+/*
+<CreateBucketConfiguration>
+  <LocationConstraint><location></LocationConstraint>
+  <StorageClass><storage class></StorageClass>
+</CreateBucketConfiguration>
+*/
+const regionalLoc = 'us-west1';
+const multiRegionalLoc = 'us';
+function setBucketClass(storageClass) {
+    const locationConstraint =
+        storageClass === 'REGIONAL' ? regionalLoc : multiRegionalLoc;
+    return '<CreateBucketConfiguration>' +
+        `<LocationConstraint>${locationConstraint}</LocationConstraint>` +
+        `<StorageClass>${storageClass}</StorageClass>` +
+        '</CreateBucketConfiguration>';
+}
+
 module.exports = {
     gcpRequestRetry,
     gcpClientRetry,
+    setBucketClass,
 };
