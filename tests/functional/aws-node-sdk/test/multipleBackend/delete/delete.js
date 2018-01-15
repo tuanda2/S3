@@ -8,19 +8,26 @@ const {
     fileLocation,
     awsLocation,
     awsLocationMismatch,
+    gcpLocation,
+    gcpLocationMismatch,
 } = require('../utils');
 
 const bucket = 'buckettestmultiplebackenddelete';
 const memObject = `memObject-${Date.now()}`;
 const fileObject = `fileObject-${Date.now()}`;
 const awsObject = `awsObject-${Date.now()}`;
-const emptyObject = `emptyObject-${Date.now()}`;
-const bigObject = `bigObject-${Date.now()}`;
-const mismatchObject = `mismatchOjbect-${Date.now()}`;
+const awsEmptyObject = `awsEmptyObject-${Date.now()}`;
+const awsBigObject = `awsBigObject-${Date.now()}`;
+const awsMismatchObject = `awsMismatchOjbect-${Date.now()}`;
+const gcpObject = `gcpObject-${Date.now()}`;
+const gcpEmptyObject = `gcpEmptyObject-${Date.now()}`;
+const gcpBigObject = `gcpBigObject-${Date.now()}`;
+const gcpMismatchObject = `gcpMismatchOjbect-${Date.now()}`;
 const body = Buffer.from('I am a body', 'utf8');
 const bigBody = Buffer.alloc(10485760);
 
-describeSkipIfNotMultiple('Multiple backend delete', () => {
+describeSkipIfNotMultiple('Multiple backend delete', function testSuite() {
+    this.timeout(80000);
     withV4(sigCfg => {
         let bucketUtil;
         let s3;
@@ -54,22 +61,48 @@ describeSkipIfNotMultiple('Multiple backend delete', () => {
             })
             .then(() => {
                 process.stdout.write('Putting 0-byte object to AWS\n');
-                const params = { Bucket: bucket, Key: emptyObject,
+                const params = { Bucket: bucket, Key: awsEmptyObject,
                     Metadata: { 'scal-location-constraint': awsLocation } };
                 return s3.putObjectAsync(params);
             })
             .then(() => {
                 process.stdout.write('Putting large object to AWS\n');
-                const params = { Bucket: bucket, Key: bigObject,
+                const params = { Bucket: bucket, Key: awsBigObject,
                     Body: bigBody,
                     Metadata: { 'scal-location-constraint': awsLocation } };
                 return s3.putObjectAsync(params);
             })
             .then(() => {
                 process.stdout.write('Putting object to AWS\n');
-                const params = { Bucket: bucket, Key: mismatchObject,
+                const params = { Bucket: bucket, Key: awsMismatchObject,
                     Body: body, Metadata:
                     { 'scal-location-constraint': awsLocationMismatch } };
+                return s3.putObjectAsync(params);
+            })
+            .then(() => {
+                process.stdout.write('Putting object to GCP\n');
+                const params = { Bucket: bucket, Key: gcpObject, Body: body,
+                    Metadata: { 'scal-location-constraint': gcpLocation } };
+                return s3.putObjectAsync(params);
+            })
+            .then(() => {
+                process.stdout.write('Putting 0-byte object to GCP\n');
+                const params = { Bucket: bucket, Key: gcpEmptyObject,
+                    Metadata: { 'scal-location-constraint': gcpLocation } };
+                return s3.putObjectAsync(params);
+            })
+            .then(() => {
+                process.stdout.write('Putting large object to GCP\n');
+                const params = { Bucket: bucket, Key: gcpBigObject,
+                    Body: bigBody,
+                    Metadata: { 'scal-location-constraint': gcpLocation } };
+                return s3.putObjectAsync(params);
+            })
+            .then(() => {
+                process.stdout.write('Putting object to GCP\n');
+                const params = { Bucket: bucket, Key: gcpMismatchObject,
+                    Body: body, Metadata:
+                    { 'scal-location-constraint': gcpLocationMismatch } };
                 return s3.putObjectAsync(params);
             })
             .catch(err => {
@@ -120,10 +153,10 @@ describeSkipIfNotMultiple('Multiple backend delete', () => {
             });
         });
         it('should delete 0-byte object from AWS', done => {
-            s3.deleteObject({ Bucket: bucket, Key: emptyObject }, err => {
+            s3.deleteObject({ Bucket: bucket, Key: awsEmptyObject }, err => {
                 assert.strictEqual(err, null,
                     `Expected success, got error ${JSON.stringify(err)}`);
-                s3.getObject({ Bucket: bucket, Key: emptyObject }, err => {
+                s3.getObject({ Bucket: bucket, Key: awsEmptyObject }, err => {
                     assert.strictEqual(err.code, 'NoSuchKey', 'Expected ' +
                         'error but got success');
                     done();
@@ -131,10 +164,10 @@ describeSkipIfNotMultiple('Multiple backend delete', () => {
             });
         });
         it('should delete large object from AWS', done => {
-            s3.deleteObject({ Bucket: bucket, Key: bigObject }, err => {
+            s3.deleteObject({ Bucket: bucket, Key: awsBigObject }, err => {
                 assert.strictEqual(err, null,
                     `Expected success, got error ${JSON.stringify(err)}`);
-                s3.getObject({ Bucket: bucket, Key: bigObject }, err => {
+                s3.getObject({ Bucket: bucket, Key: awsBigObject }, err => {
                     assert.strictEqual(err.code, 'NoSuchKey', 'Expected ' +
                         'error but got success');
                     done();
@@ -143,10 +176,59 @@ describeSkipIfNotMultiple('Multiple backend delete', () => {
         });
         it('should delete object from AWS location with bucketMatch set to ' +
         'false', done => {
-            s3.deleteObject({ Bucket: bucket, Key: mismatchObject }, err => {
+            s3.deleteObject({ Bucket: bucket, Key: awsMismatchObject },
+            err => {
                 assert.equal(err, null,
                     `Expected success, got error ${JSON.stringify(err)}`);
-                s3.getObject({ Bucket: bucket, Key: mismatchObject }, err => {
+                s3.getObject({ Bucket: bucket, Key: awsMismatchObject },
+                err => {
+                    assert.strictEqual(err.code, 'NoSuchKey',
+                        'Expected error but got success');
+                    done();
+                });
+            });
+        });
+        it('should delete object from GCP', done => {
+            s3.deleteObject({ Bucket: bucket, Key: gcpObject }, err => {
+                assert.strictEqual(err, null,
+                    `Expected success, got error ${JSON.stringify(err)}`);
+                s3.getObject({ Bucket: bucket, Key: gcpObject }, err => {
+                    assert.strictEqual(err.code, 'NoSuchKey', 'Expected ' +
+                        'error but got success');
+                    done();
+                });
+            });
+        });
+        it('should delete 0-byte object from GCP', done => {
+            s3.deleteObject({ Bucket: bucket, Key: gcpEmptyObject }, err => {
+                assert.strictEqual(err, null,
+                    `Expected success, got error ${JSON.stringify(err)}`);
+                s3.getObject({ Bucket: bucket, Key: gcpEmptyObject }, err => {
+                    assert.strictEqual(err.code, 'NoSuchKey', 'Expected ' +
+                        'error but got success');
+                    done();
+                });
+            });
+        });
+        it('should delete large object from GCP', done => {
+            s3.deleteObject({ Bucket: bucket, Key: gcpBigObject }, err => {
+                assert.strictEqual(err, null,
+                    `Expected success, got error ${JSON.stringify(err)}`);
+                s3.getObject({ Bucket: bucket, Key: gcpBigObject }, err => {
+                    assert.strictEqual(err.code, 'NoSuchKey', 'Expected ' +
+                        'error but got success');
+                    done();
+                });
+            });
+        });
+        it('should delete object from AWS location with bucketMatch set to ' +
+        'false', done => {
+            s3.deleteObject({ Bucket: bucket, Key: gcpMismatchObject },
+            err => {
+                assert.equal(err, null,
+                    `Expected success, got error ${JSON.stringify(err)}`);
+                s3.getObject({ Bucket: bucket, Key: gcpMismatchObject },
+                err => {
                     assert.strictEqual(err.code, 'NoSuchKey',
                         'Expected error but got success');
                     done();
