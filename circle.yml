@@ -22,7 +22,6 @@ machine:
 
 dependencies:
   override:
-    - env >> env.list && cat env.list
     - rm -rf node_modules
     - npm install
   post:
