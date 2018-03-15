@@ -1,19 +1,32 @@
-# Issue template
+# General support information
 
-If you are reporting a new issue, make sure that we do not have any
-duplicates already open. You can ensure this by searching the issue list for
-this repository. If there is a duplicate, please close your issue and add a
-comment to the existing issue instead.
+GitHub Issues are **reserved** for actionable bug reports (including
+documentation inaccuracies), and feature requests.
+**All questions** (regarding configuration, usecases, performance, community,
+events, setup and usage recommendations, among other things) should be asked on
+the **[Scality Zenko Forum](http://forum.scality.com/)**.
 
-## General support information
+> Questions opened as GitHub issues will systematically be closed, and moved to
+> the [Scality Zenko Forum](http://forum.scality.com/).
 
-GitHub Issues are reserved for actionable bug reports and feature requests.
-General questions should be sent to the
-[S3 scality server Forum](http://forum.scality.com/).
+--------------------------------------------------------------------------------
+
+## Avoiding duplicates
+
+When reporting a new issue/requesting a feature, make sure that we do not have
+any duplicates already open:
+
+- search the issue list for this repository (use the search bar, select
+  "Issues" on the left pane after searching);
+- if there is a duplicate, please do not open your issue, and add a comment
+  to the existing issue instead.
+
+--------------------------------------------------------------------------------
 
 ## Bug report information
 
-(delete this section if not applicable)
+(delete this section (everything between the lines) if you're not repoting a bug
+but requesting a feature)
 
 ### Description
 
@@ -31,11 +44,20 @@ Describe the results you received
 
 Describe the results you expecteds
 
-### Additional information: (Node.js version, Docker version, etc)
+### Additional information
+
+- Node.js version,
+- Docker version,
+- npm version,
+- distribution/OS,
+- optional: anything else you deem helpful to us.
+
+--------------------------------------------------------------------------------
 
 ## Feature Request
 
-(delete this section if not applicable)
+(delete this section (everything between the lines) if you're not requesting
+a feature but reporting a bug)
 
 ### Proposal
 
@@ -52,3 +74,15 @@ What you would like to happen
 ### Use case
 
 Please provide use cases for changing the current behavior
+
+### Additional information
+
+- Is this request for your company? Y/N
+
+..- If Y: Company name:
+..- Are you using any Scality Enterprise Edition products (RING, Zenko EE)? Y/N
+
+- Position/Title:
+- How did you hear about us?
+
+--------------------------------------------------------------------------------
