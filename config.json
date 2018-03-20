@@ -70,7 +70,7 @@
         "port": 9991
     },
     "recordLog": {
-        "enabled": false,
+        "enabled": true,
         "recordLogName": "s3-recordlog"
     },
     "mongodb": {
