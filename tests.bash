@@ -2,6 +2,8 @@
 set -x #echo on
 set -e #exit at the first error
 
+mkdir -p ~/.aws
+
 cat >>~/.aws/credentials <<EOF
 [default]
 aws_access_key_id = $AWS_ACCESS_KEY_ID_DEFAULT
@@ -148,7 +150,7 @@ then
   S3BACKEND=mem MPU_TESTING=yes S3METADATA=mongodb npm start > $CIRCLE_ARTIFACTS/server_mongodb_awssdk.txt & bash wait_for_local_port.bash 8000 40 && npm run ft_test
 
   killandsleep 8000
-  
+
 fi
 
 if [ $CIRCLE_NODE_INDEX -eq 3 ]
