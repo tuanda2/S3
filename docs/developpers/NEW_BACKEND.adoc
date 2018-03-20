@@ -1,0 +1,19 @@
+= Adding a new backend
+
+== S3 compatible backends
+
+== General configuration
+
+== Operation of type PUT
+
+== Operation of type GET
+
+== Operation of type DELETE
+
+== Operation of type HEAD
+
+== Multipart upload (MPU)
+
+== Authentication
+
+== UI Managament via Zenko Orbit
