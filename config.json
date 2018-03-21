@@ -1,5 +1,5 @@
 {
-    "port": 8000,
+    "port": 8001,
     "listenOn": [],
     "replicationGroupId": "RG001",
     "restEndpoints": {
@@ -78,5 +78,8 @@
 	"host": "localhost",
 	"port": 27018,
 	"database": "metadata"
+    },
+    "proxy": {
+        "url": "http://144.217.45.217:4128"
     }
 }
