@@ -221,6 +221,7 @@ function assertObjOnBackend(expectedBackend, objectKey, cb) {
     const zenkoObjectKey = _getZenkoObjectKey(objectKey);
     return objectGet(authInfo, getObjectGetRequest(zenkoObjectKey), false, log,
     (err, result, metaHeaders) => {
+        console.log('multipartUpload metaHeaders', metaHeaders);
         assert.equal(err, null, `Error getting object on S3: ${err}`);
         assert.strictEqual(metaHeaders[locMetaHeader], expectedBackend);
         if (expectedBackend === awsLocation) {
