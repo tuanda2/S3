@@ -41,7 +41,7 @@ const bucketName = 'bucketname';
 const awsBucket = config.locationConstraints[awsLocation].details.bucketName;
 const smallBody = Buffer.from('I am a body', 'utf8');
 const bigBody = Buffer.alloc(10485760);
-const locMetaHeader = 'x-amz-meta-scal-location-constraint';
+const locMetaHeader = 'scal-location-constraint';
 const bucketPutRequest = {
     bucketName,
     namespace,
