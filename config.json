@@ -78,8 +78,5 @@
 	"host": "localhost",
 	"port": 27018,
 	"database": "metadata"
-    },
-    "proxy": {
-        "url": "http://144.217.45.217:4128"
     }
 }
